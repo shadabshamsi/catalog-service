@@ -62,7 +62,7 @@ bootRun {
 
 bootBuildImage {
     imageName = "${project.name}"
-    environment = ["BP_JVM_VERSION" : "17.*", "BP_NATIVE_IMAGE" : "false"]
+    environment = ["BP_JVM_VERSION" : "17.*", "BP_NATIVE_IMAGE" : "false", BP_LIVE_RELOAD_ENABLED : "true"]
 
     docker {                                                   
         publishRegistry {                                        
