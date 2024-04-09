@@ -1,6 +1,6 @@
 plugins {
     id 'java'
-    id 'org.springframework.boot' version '3.1.1'
+    id 'org.springframework.boot' version '3.2.4'
     id 'io.spring.dependency-management' version '1.1.0'
     // id 'org.graalvm.buildtools.native' version '0.9.23'
 }
@@ -23,8 +23,8 @@ repositories {
 }
 
 ext {
-	set('springCloudVersion', "2022.0.4")
-    set('testcontainersVersion', "1.18.3")
+	set('springCloudVersion', "2023.0.1")
+    set('testcontainersVersion', "1.19.7")
 }
 
 dependencies {
@@ -64,8 +64,8 @@ bootBuildImage {
     imageName = "${project.name}"
     environment = ["BP_JVM_VERSION" : "17.*", "BP_NATIVE_IMAGE" : "false", BP_LIVE_RELOAD_ENABLED : "true"]
 
-    docker {                                                   
-        publishRegistry {                                        
+    docker {
+        publishRegistry {
             username = project.findProperty("registryUsername") 
             password = project.findProperty("registryToken") 
             url = project.findProperty("registryUrl") 
