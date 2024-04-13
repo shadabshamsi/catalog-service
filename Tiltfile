@@ -12,18 +12,19 @@ custom_build(
     # Command to build the container image
     command = gradlew + ' bootBuildImage --imageName ' + expected_ref,
     # Files to watch that trigger a new build
-    deps = ['build.gradle', 'build/classes', 'src/main/resources'],
+    # deps = ['build.gradle', 'build/classes', 'src/main/resources'],
+    deps = ['build.gradle', 'src'],
 
-    live_update = [
-        sync('build/classes/java/main', '/workspace/BOOT-INF/classes'),
-        sync('src/main/resources', '/workspace/BOOT-INF/classes')
-    ]
+    # live_update = [
+    #    sync('build/classes/java/main', '/workspace/BOOT-INF/classes'),
+    #    sync('src/main/resources', '/workspace/BOOT-INF/classes')
+    # ]
 )
 
-local_resource(
-  'compile-java',
-  gradlew + ' compileJava',
-  deps=['src', 'build.gradle'])
+# local_resource(
+#   'compile-java',
+#   gradlew + ' compileJava',
+#   deps=['src', 'build.gradle'])
  
 # Deploy
 k8s_yaml(['k8s/deployment.yml', 'k8s/service.yml'])
