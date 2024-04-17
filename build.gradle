@@ -58,6 +58,7 @@ tasks.named('test') {
 
 tasks.named("bootBuildImage") {
     builder = "dashaun/builder:tiny"
+    buildpacks = ["urn:cnb:builder:paketo-buildpacks/java", "gcr.io/paketo-buildpacks/health-checker:latest"]
 }
 
 bootRun {
@@ -68,6 +69,7 @@ bootBuildImage {
     imageName = "${project.name}"
     environment = ["BP_JVM_VERSION" : "17.*", "BP_NATIVE_IMAGE" : "false" // native image not working well on mac
 //                   , BP_LIVE_RELOAD_ENABLED : "true"  // when enabled, native image won't be build
+                   , "BP_HEALTH_CHECKER_ENABLED" : "true"
     ]
 
     docker {
