@@ -1,5 +1,10 @@
 package com.shadabshamsi.catalogservice.web;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -17,9 +22,14 @@ import jakarta.validation.Valid;
 
 import org.springframework.http.HttpStatus;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @RestController
 @RequestMapping("books")
 public class BookController {
+    private static final Logger log =
+            LoggerFactory.getLogger(BookController.class);
     private final BookService bookService;
 
     public BookController(BookService bookService) {
@@ -28,6 +38,9 @@ public class BookController {
 
     @GetMapping
     public Iterable<Book> get() {
+        log.info(
+                "Fetching the list of books in the catalog"
+        );
         return bookService.viewBookList();
     }
 
@@ -36,9 +49,21 @@ public class BookController {
         return bookService.viewBookDetails(isbn);
     }
 
+    private List<String> rolesUser() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        List<GrantedAuthority> authorities = (List<GrantedAuthority>) authentication.getAuthorities();
+        List<String> roles = authorities.stream()
+                .map(GrantedAuthority::getAuthority)
+                .collect(Collectors.toList());
+        return roles;
+    }
+
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public Book post(@Valid @RequestBody Book book) {
+        List<String> roles = rolesUser();
+        System.out.println("ShadabLog: Roles=" + roles);
+        roles.forEach(System.out::println);
         return bookService.addBookToCatalog(book);
     }
 
